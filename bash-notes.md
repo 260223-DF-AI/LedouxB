@@ -37,6 +37,7 @@
 ### Delete
 - rm	| remove
 	- -r	| remove everything
+	- -f	| ignore warnings (avoid using)
 - rmdir	| remove directory
 
 ## Utility
@@ -44,11 +45,18 @@
 
 ## Git
 
+### Repo Initialization
 - git clone `link`			| clones repo to local machine at current location
+
+### Utility
 - git status				| current branch, commit history, local changes
+
+### Changes
 - git add `file`			| add local changes to a commit
 - git rm --cached `file`	| remove file from commit
 - git commit -m `msg`		| stage commit
 - git push					| push staged commits to remote repo
+
+### Syncing
 - git fetch					| check for changes to origin
 - git pull					| copy changes from origin
