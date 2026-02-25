@@ -60,12 +60,20 @@ learngitbranching.js.org
 - git rm --cached `file`	| remove file from commit
 - git commit -m `msg`		| stage commit
 - git push			| push staged commits to remote repo
+	- origin `branch`		| allows push of `branch` to remote while HEAD is elsewhere (no need to checkout `branch`)
+	- origin `source`:`destination`	| same as before but specifying different local and remote branches (colon refspec), empty source deletes remote branch
 - git reset HEAD~`n`		| moves branch reference back `n` commits, rewrites commit history
 - git revert HEAD		| appends commit that reverse changes of previous commit
 
 ### Syncing
-- git fetch	| check for changes to origin
-- git pull	| copy changes from origin
+- git fetch	| check for changes to all origin branches, download without merging/rebasing, similar args to push
+	- origin `branch`		| 
+	- origin `source`:`destination`	| empty source creates new branch locally (at HEAD?)
+- git pull	| copy changes from origin, equivalent to fetch then merge
+	- --rebase	| changes to fetch and rebase
+	- origin `branch`		| same as fetch origin branch then merge o/branch
+	- origin `source`:`destination`	| same as fetch origin `source`:`destination` then merge `destination`
+	
 
 ### Branching
 - git rebase `branch`		| takes commits from current branch and appends them to commits of `branch`
