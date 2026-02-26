@@ -21,7 +21,7 @@ from datetime import datetime
 contacts = []
 
 
-def organize(contacts: list[dict]):
+def organize(contacts: list[dict]) -> list[dict]:
     """
     Sort contact book by alphabetical order, recursive binary sort
 
@@ -51,7 +51,7 @@ def organize(contacts: list[dict]):
         full_list += first_half + second_half
         return full_list
 
-    return -1 # something went wrong, shouldn't run since all n values covered in above
+    return None # something went wrong, shouldn't run since all n values covered in above
 
 
 
@@ -59,7 +59,7 @@ def organize(contacts: list[dict]):
 # TODO: Task 1 - Create the Contact Book
 # =============================================================================
 
-def add_contact(contacts: list[dict], name: str, phone: str, email: str, category: str):
+def add_contact(contacts: list[dict], name: str, phone: str, email: str, category: str) -> dict:
     """
     Add a new contact to the contact book.
     
@@ -97,7 +97,7 @@ def add_contact(contacts: list[dict], name: str, phone: str, email: str, categor
 # TODO: Task 2 - Display Contacts
 # =============================================================================
 
-def display_all_contacts(contacts: list[dict]):
+def display_all_contacts(contacts: list[dict]) -> None:
     """
     Display all contacts in a formatted table.
     
@@ -129,7 +129,7 @@ def display_all_contacts(contacts: list[dict]):
 
 
 
-def display_contact_details(contact: dict):
+def display_contact_details(contact: dict) -> None:
     """
     Display detailed information for a single contact.
     
@@ -156,7 +156,7 @@ def display_contact_details(contact: dict):
 # TODO: Task 3 - Search Functionality
 # =============================================================================
 
-def search_by_name(contacts: list[dict], query: str):
+def search_by_name(contacts: list[dict], query: str) -> list[dict]:
     """
     Find contacts whose name contains the query string.
     Case-insensitive search.
@@ -170,7 +170,7 @@ def search_by_name(contacts: list[dict], query: str):
     return results
 
 
-def filter_by_category(contacts: list[dict], category: str):
+def filter_by_category(contacts: list[dict], category: str) -> list[dict]:
     """
     Return all contacts in a specific category.
     
@@ -182,7 +182,7 @@ def filter_by_category(contacts: list[dict], category: str):
     return results
 
 
-def find_by_phone(contacts: list[dict], phone: str):
+def find_by_phone(contacts: list[dict], phone: str) -> dict:
     """
     Find a contact by exact phone number.
     
@@ -201,7 +201,7 @@ def find_by_phone(contacts: list[dict], phone: str):
 # TODO: Task 4 - Update and Delete
 # =============================================================================
 
-def update_contact(contacts: list[dict], phone: str, field: str, new_value: str):
+def update_contact(contacts: list[dict], phone: str, field: str, new_value: str) -> bool:
     """
     Update a specific field of a contact.
     
@@ -231,7 +231,7 @@ def update_contact(contacts: list[dict], phone: str, field: str, new_value: str)
     return True
 
 
-def delete_contact(contacts: list[dict], phone: str):
+def delete_contact(contacts: list[dict], phone: str) -> bool:
     """
     Delete a contact by phone number.
     
@@ -250,7 +250,7 @@ def delete_contact(contacts: list[dict], phone: str):
 # TODO: Task 5 - Statistics
 # =============================================================================
 
-def display_statistics(contacts: list[dict]):
+def display_statistics(contacts: list[dict]) -> None:
     """
     Display statistics about the contact book.
     
