@@ -54,6 +54,7 @@ learngitbranching.js.org
 - git status		| current branch, commit history, local changes
 - git tag `name` `ref`	| give a more permanent label to a commit than a branch reference
 - git describe `ref`	| describe path to closest ancestor tag from ref (default HEAD)
+- git log		| give history of commits
 
 ### Changes
 - git add `file`		| add local changes to a commit
