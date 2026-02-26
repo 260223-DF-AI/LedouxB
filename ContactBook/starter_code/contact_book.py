@@ -21,6 +21,40 @@ from datetime import datetime
 contacts = []
 
 
+def organize(contacts):
+    """
+    Sort contact book by alphabetical order, recursive binary sort
+
+    Args:
+        contacts: The list of contacts
+    
+    Return:
+    """
+    # TODO: Sort contact book
+    n = len(contacts)
+    if (n < 2):
+        return contacts
+    elif (n == 2):
+        if contacts[0]["name"] < contacts[1]["name"]:
+            return contacts
+        else:
+            return [contacts[1], contacts[0]]
+    elif (n > 2):
+        full_list = []
+        first_half = organize(contacts[:n//2])
+        second_half = organize(contacts[n//2:])
+        while first_half and second_half:
+            if first_half[0]["name"] <= second_half[0]["name"]:
+                full_list.append(first_half.pop(0))
+            else:
+                full_list.append(second_half.pop(0))
+        full_list += first_half + second_half
+        return full_list
+
+    return -1
+
+
+
 # =============================================================================
 # TODO: Task 1 - Create the Contact Book
 # =============================================================================
@@ -53,6 +87,8 @@ def add_contact(contacts, name, phone, email, category):
     }
 
     contacts.append(new_contact)
+
+    contacts[:] = organize(contacts) # wierd formatting for namespace issues (changing list in here wouldnt update it externally)
 
     return new_contact
 
@@ -191,6 +227,7 @@ def update_contact(contacts, phone, field, new_value):
     contacts.remove(contact)
     contact[field] = new_value
     contacts.insert(index, contact)
+    contacts[:] = organize(contacts) # wierd formatting but necessary for namespace issues
     return True
 
 
