@@ -21,7 +21,7 @@ from datetime import datetime
 contacts = []
 
 
-def organize(contacts):
+def organize(contacts: list[dict]):
     """
     Sort contact book by alphabetical order, recursive binary sort
 
@@ -32,14 +32,14 @@ def organize(contacts):
     """
     # TODO: Sort contact book
     n = len(contacts)
-    if (n < 2):
+    if (n < 2): # only 1 item in list, no need to sort (shouldn't ever be 0)
         return contacts
-    elif (n == 2):
+    elif (n == 2): # two items in list, either return in order or flipped order
         if contacts[0]["name"] < contacts[1]["name"]:
             return contacts
         else:
             return [contacts[1], contacts[0]]
-    elif (n > 2):
+    elif (n > 2): # list longer than two, need to split down to <=2 items
         full_list = []
         first_half = organize(contacts[:n//2])
         second_half = organize(contacts[n//2:])
@@ -51,7 +51,7 @@ def organize(contacts):
         full_list += first_half + second_half
         return full_list
 
-    return -1
+    return -1 # something went wrong, shouldn't run since all n values covered in above
 
 
 
@@ -59,7 +59,7 @@ def organize(contacts):
 # TODO: Task 1 - Create the Contact Book
 # =============================================================================
 
-def add_contact(contacts, name, phone, email, category):
+def add_contact(contacts: list[dict], name: str, phone: str, email: str, category: str):
     """
     Add a new contact to the contact book.
     
@@ -97,7 +97,7 @@ def add_contact(contacts, name, phone, email, category):
 # TODO: Task 2 - Display Contacts
 # =============================================================================
 
-def display_all_contacts(contacts):
+def display_all_contacts(contacts: list[dict]):
     """
     Display all contacts in a formatted table.
     
@@ -129,7 +129,7 @@ def display_all_contacts(contacts):
 
 
 
-def display_contact_details(contact):
+def display_contact_details(contact: dict):
     """
     Display detailed information for a single contact.
     
@@ -156,7 +156,7 @@ def display_contact_details(contact):
 # TODO: Task 3 - Search Functionality
 # =============================================================================
 
-def search_by_name(contacts, query):
+def search_by_name(contacts: list[dict], query: str):
     """
     Find contacts whose name contains the query string.
     Case-insensitive search.
@@ -170,7 +170,7 @@ def search_by_name(contacts, query):
     return results
 
 
-def filter_by_category(contacts, category):
+def filter_by_category(contacts: list[dict], category: str):
     """
     Return all contacts in a specific category.
     
@@ -182,7 +182,7 @@ def filter_by_category(contacts, category):
     return results
 
 
-def find_by_phone(contacts, phone):
+def find_by_phone(contacts: list[dict], phone: str):
     """
     Find a contact by exact phone number.
     
@@ -201,7 +201,7 @@ def find_by_phone(contacts, phone):
 # TODO: Task 4 - Update and Delete
 # =============================================================================
 
-def update_contact(contacts, phone, field, new_value):
+def update_contact(contacts: list[dict], phone: str, field: str, new_value: str):
     """
     Update a specific field of a contact.
     
@@ -231,7 +231,7 @@ def update_contact(contacts, phone, field, new_value):
     return True
 
 
-def delete_contact(contacts, phone):
+def delete_contact(contacts: list[dict], phone: str):
     """
     Delete a contact by phone number.
     
@@ -250,7 +250,7 @@ def delete_contact(contacts, phone):
 # TODO: Task 5 - Statistics
 # =============================================================================
 
-def display_statistics(contacts):
+def display_statistics(contacts: list[dict]):
     """
     Display statistics about the contact book.
     
