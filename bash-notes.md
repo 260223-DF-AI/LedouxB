@@ -55,6 +55,7 @@ learngitbranching.js.org
 - git tag `name` `ref`	| give a more permanent label to a commit than a branch reference
 - git describe `ref`	| describe path to closest ancestor tag from ref (default HEAD)
 - git log		| give history of commits
+- .gitignore		| file to omit files and folders from git tracking
 
 ### Changes
 - git add `file`		| add local changes to a commit
