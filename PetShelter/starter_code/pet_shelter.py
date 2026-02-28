@@ -115,12 +115,14 @@ class Cat(Animal):
         # TODO: Call parent constructor with species="Cat"
         # TODO: Set self.color
         # TODO: Set self.is_indoor
-        pass
+        super().__init__(name, age, "Cat")
+        self.color = color
+        self.is_indoor = is_indoor
     
     def speak(self):
         """Cats meow."""
         # TODO: Return "{name} says Meow!"
-        pass
+        return f"{self.name} says Meow!"
     
     def scratch(self):
         """Cats scratch."""
@@ -130,7 +132,9 @@ class Cat(Animal):
         """Override to include color and indoor status."""
         # TODO: Get base description from parent
         # TODO: Add color and indoor/outdoor status
-        pass
+        base = super().describe()
+        indoor = "indoor" if self.is_indoor else "outdoor"
+        return f"{base} - {self.color}, {indoor}"
 
 
 # =============================================================================
@@ -179,17 +183,19 @@ class ServiceDog(Dog):
         """
         # TODO: Call parent constructor with is_trained=True
         # TODO: Set self.service_type
-        pass
+        super().__init__(name, age, breed, True)
+        self.service_type = service_type
     
     def perform_service(self):
         """Perform the dog's service."""
         # TODO: Return "{name} performs {service_type} duties."
-        pass
+        return f"{self.name} performs {self.service_type} duties."
     
     def describe(self):
         """Include service type in description."""
         # TODO: Get base description and add service type
-        pass
+        base = super().describe()
+        return f"{base} - {self.service_type}"
 
 
 class Kitten(Cat):
@@ -207,17 +213,22 @@ class Kitten(Cat):
         # TODO: Convert months to years
         # TODO: Call parent constructor
         # TODO: Store age_months
-        pass
+        age_years = age_months // 12
+        super().__init__(name, age_years, color)
+        self.age_months = age_months
+
     
     def speak(self):
         """Kittens mew."""
         # TODO: Return "{name} says Mew! Mew!"
-        pass
+        return f"{self.name} says Mew! Mew!"
     
     def describe(self):
         """Show age in months for kittens."""
         # TODO: Similar to Puppy.describe()
-        pass
+        status = "adopted" if self._adopted else "available"
+        return f"{self.name} is a {self.age_months}-month-old {self.color} kitten ({status})"
+
 
 
 # =============================================================================
@@ -241,17 +252,20 @@ class Shelter:
         """Find an animal by name."""
         # TODO: Loop through animals and return one with matching name
         # TODO: Return None if not found
-        pass
+        for animal in self.animals:
+            if name == animal.name:
+                return animal
+        return None
     
     def list_available(self):
         """List all animals available for adoption."""
         # TODO: Return list of animals where is_adopted() is False
-        pass
+        return [animal for animal in self.animals if not animal.is_adopted()]
     
     def list_by_species(self, species):
         """List all animals of a specific species."""
         # TODO: Filter self.animals by species
-        pass
+        return [animal for animal in self.animals if animal.species == species]
     
     def adopt_animal(self, name):
         """Adopt an animal by name."""
@@ -310,6 +324,10 @@ def main():
     # TODO: Add a Puppy
     # TODO: Add a ServiceDog
     # TODO: Add a Kitten
+    shelter.add_animal(Cat("Cooper", 2, "orange"))
+    shelter.add_animal(Puppy("Olivia", 4, "Italian Greyhound"))
+    shelter.add_animal(ServiceDog("Davner", 16, "Australian Shepherd Mix", "search"))
+    shelter.add_animal(Kitten("Willow", 33, "calico"))
     
     # Display all animals
     shelter.display_all()
