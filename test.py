@@ -3,7 +3,7 @@
 
 def main():
 	print("Hello, World!")
-	numList = [5, 7, 4, 2, 8, 9, 5]
+	numList = [5, 7, 4, 2, 8, 9, 5, 10, 1, 144, 32, 2934, 453, 3]
 	print(f"Current list: {numList}")
 	sortedList = simpleSort(numList)
 	print(f"Sorted list, O(n^2): {sortedList}")
@@ -47,7 +47,15 @@ def binarySort(list):
 		else:
 			return [list[1], list[0]]
 	elif (n > 2):
-		return binarySort(list[:n//2]) + binarySort(list[n//2:])
+		first_half = binarySort(list[:n//2])
+		second_half = binarySort(list[n//2:])
+		combined_list = []
+		while first_half and second_half:
+			if first_half[0] < second_half[0]:
+				combined_list.append(first_half.pop(0))
+			else:
+				combined_list.append(second_half.pop(0))
+		return combined_list + first_half + second_half
 	return -1
 
 if __name__ == "__main__":
