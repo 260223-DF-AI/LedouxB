@@ -2,8 +2,7 @@
 /test/*
 .env
 *.csv
-*/__pycache__/*
-*__pycache__/*
+__pycache__
 
 
 # don't need to omit venv, has its own .gitignore that ignores all the contents of itself
