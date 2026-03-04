@@ -1,0 +1,5 @@
+==================== PROCESSING ERRORS ====================
+Line 2: Invalid date 'invalid-date'
+Line 3: Quantity must be positive, got -2
+Line 4: Missing required field store_id
+Line 5: Invalid quantity 'abc'

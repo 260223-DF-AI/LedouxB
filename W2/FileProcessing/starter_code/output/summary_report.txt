@@ -1,0 +1,21 @@
+=== Sales Processing Report ===
+Generated: 2026-03-04 13:38:07
+
+Processing Statistics:
+- Total records: 7
+- Valid records: 3
+- Error records: 4
+
+Errors:
+- Line 2: Invalid date 'invalid-date'
+- Line 3: Quantity must be positive, got -2
+- Line 4: Missing required field store_id
+- Line 5: Invalid quantity 'abc'
+
+Sales by Store:
+- STORE001: $659.78
+- STORE002: $249.95
+
+Top Products:
+1. Widget A: 22 units
+2. Gadget B: 5 units
