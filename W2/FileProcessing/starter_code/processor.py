@@ -21,7 +21,10 @@ def process_sales_file(input_path: str, output_dir: str):
         filemode='w',
     )
     try:
-        data: list = read_csv_file(input_path)
+        if input_path.endswith(".csv"):
+            data: list = read_csv_file(input_path)
+        elif input_path.endswith(".json"):
+            data: list = read_json_file(input_path)
         validated_records, errors = validate_all_records(data)
         records_totals = calculate_totals(validated_records)
         aggregates_stores = aggregate_by_store(records_totals)

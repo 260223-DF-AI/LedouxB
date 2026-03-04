@@ -1,0 +1,51 @@
+[
+    {
+        "date": "2024-01-15",
+        "store_id": "STORE001",
+        "product": "Widget A",
+        "quantity": 10,
+        "price": 29.99
+    },
+    {
+        "date": "2024-01-15",
+        "store_id": "STORE002",
+        "product": "Gadget B",
+        "quantity": 5,
+        "price": 49.99
+    },
+    {
+        "date": "invalid-date",
+        "store_id": "STORE001",
+        "product": "Widget A",
+        "quantity": 3,
+        "price": 29.99
+    },
+    {
+        "date": "2024-01-16",
+        "store_id": "STORE003",
+        "product": "Widget C",
+        "quantity": -2,
+        "price": 19.99
+    },
+    {
+        "date": "2024-01-16",
+        "store_id": "",
+        "product": "Product X",
+        "quantity": 8,
+        "price": 15.00
+    },
+    {
+        "date": "2024-01-16",
+        "store_id": "STORE002",
+        "product": "Gadget B",
+        "quantity": "abc",
+        "price": 49.99
+    },
+    {
+        "date": "2024-01-17",
+        "store_id": "STORE001",
+        "product": "Widget A",
+        "quantity": 12,
+        "price": 29.99
+    }
+]
