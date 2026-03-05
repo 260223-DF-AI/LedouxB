@@ -1,5 +1,6 @@
 import re
 from collections import Counter
+from models import NGram
 
 def tokenize(text):
     """
@@ -9,7 +10,9 @@ def tokenize(text):
     - Remove extra whitespace
     Returns: List of words
     """
-    pass
+    # string.punctuation
+    words = text.lower().strip(",.?!").split()
+    return words
 
 def get_sentences(text):
     """
@@ -18,7 +21,10 @@ def get_sentences(text):
     - Handle multiple punctuation (!! or ...)
     Returns: List of sentences
     """
-    pass
+    titles = r'(?<!Dr)(?<!Mr)(?<!Mrs)(?<!Ms)(?<!Prof)(?<!Sr)(?<!Jr)(?<!St)'
+    sentences = re.split(titles + r"\.\s+", text)
+    return sentences
+
 
 def get_ngrams(words, n):
     """
@@ -26,7 +32,12 @@ def get_ngrams(words, n):
     Example: get_ngrams(['a', 'b', 'c'], 2) -> [('a', 'b'), ('b', 'c')]
     Returns: List of tuples
     """
-    pass
+
+    ngrams: list = []
+    for i in range(len(words)-n+1):
+        ngrams.append(tuple(words[i:i+n]))
+
+    print(ngrams)
 
 def remove_stopwords(words, stopwords=None):
     """
@@ -34,4 +45,10 @@ def remove_stopwords(words, stopwords=None):
     Use a default set if stopwords not provided.
     Returns: Filtered list of words
     """
-    pass
+    if not stopwords:
+        stopwords = ["i", "me", "my", "myself", "we", "our", "ours", "ourselves", "you", "your", "yours", "yourself", "yourselves", "he", "him", "his", "himself", "she", "her", "hers", "herself", "it", "its", "itself", "they", "them", "their", "theirs", "themselves", "what", "which", "who", "whom", "this", "that", "these", "those", "am", "is", "are", "was", "were", "be", "been", "being", "have", "has", "had", "having", "do", "does", "did", "doing", "a", "an", "the", "and", "but", "if", "or", "because", "as", "until", "while", "of", "at", "by", "for", "with", "about", "against", "between", "into", "through", "during", "before", "after", "above", "below", "to", "from", "up", "down", "in", "out", "on", "off", "over", "under", "again", "further", "then", "once", "here", "there", "when", "where", "why", "how", "all", "any", "both", "each", "few", "more", "most", "other", "some", "such", "no", "nor", "not", "only", "own", "same", "so", "than", "too", "very", "s", "t", "can", "will", "just", "don", "should", "now"]
+    return list(filter(lambda x: x not in stopwords, words))
+
+# get_ngrams(["a", "b", "c", "d", "e"], 2)
+
+# print(remove_stopwords(["i", "i", "i", "i", "me", "me", "me", "me", "notstopword"]))
