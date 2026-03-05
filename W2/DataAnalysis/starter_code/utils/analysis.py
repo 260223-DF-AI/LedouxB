@@ -8,6 +8,7 @@ def load_data(filepath):
     - Return a clean DataFrame
     """
     df = pd.read_csv(filepath)
+    clean_data(df)
     explore_data(df)
 
 
@@ -56,7 +57,14 @@ def clean_data(df):
     # region: Fill w/ "Global" as general coverage. NOTE: Interplanetary locations will be grouped in if missing region value
     df["region"].fillna["Global"]
 
-    
+    df["order_date"] = pd.to_datetime(df["order_date"])
+    df["product_name"] = df["product_name"].str.lower().strip()
+    df["category"] = df["category"].str.capitalize().strip()
+    df["region"] = df["region"].str.capitalize().strip()
+
+    df["total_amount"] = df["quantity"] * df["unit_price"]
+
+    # return df #?
 
 def add_time_features(df):
     """
@@ -66,7 +74,10 @@ def add_time_features(df):
     - quarter
     - is_weekend (boolean)
     """
-    pass
+    df["day_of_week"] = df["datetime"].dt.dayofweek
+    df["month"] = df["datetime"].dt.month
+    df["quarter"] = df["datetime"].dt.quarter
+    df["is_weekend"] = df["day_of_week"] >= 5
 
 def sales_by_category(df):
     """
