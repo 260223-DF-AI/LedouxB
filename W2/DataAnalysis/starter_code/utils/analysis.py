@@ -85,28 +85,46 @@ def sales_by_category(df):
     Returns: DataFrame with columns [category, total_sales, order_count, avg_order_value]
     Sorted by total_sales descending.
     """
-    pass
+    sales = pd.DataFrame()
+    sales["category"] = df["category"].unique()
+    sales["total_sales"] = df.groupby("category")["total_amount"].sum()
+    sales["order_count"] = df.groupby("category")["quantity"].sum()
+    sales["avg_order_value"] = sales["total_sales"] / sales["order_count"]
+    return sales
 
 def sales_by_region(df):
     """
     Calculate total sales by region.
     Returns: DataFrame with columns [region, total_sales, percentage_of_total]
     """
-    pass
+    sales = pd.DataFrame()
+    sales["region"] = df["region"].unique()
+    sales["total_sales"] = df.groupby("region")["total_amount"].sum()
+    sales["percentage_of_total"] = sales["total_sales"] / sales["total_sales"].sum()
+    return sales
 
 def top_products(df, n=10):
     """
     Find top N products by total sales.
     Returns: DataFrame with columns [product_name, category, total_sales, units_sold]
     """
-    pass
+    top = pd.DataFrame()
+    top["product_name"] = df["product_name"].unique()
+    top["category"] = df.groupby("product_name")["category"]
+    top["total_sales"] = df.groupby("product_name")["total_amount"].sum()
+    top["units_sold"] = df.groupby("product_name")["quantity"].sum()
+    return top.sort_values("total_sales", ascending=False).head(n=n)
 
 def daily_sales_trend(df):
     """
     Calculate daily sales totals.
     Returns: DataFrame with columns [date, total_sales, order_count]
     """
-    pass
+    daily = pd.DataFrame()
+    daily["date"] = df["order_date"].unique()
+    daily["total_sales"] = df.groupby("order_date")["total_amount"].sum()
+    daily["order_count"] = df.groupby("order_date")["quantity"].sum()
+    return daily
 
 def customer_analysis(df):
     """
@@ -114,11 +132,35 @@ def customer_analysis(df):
     Returns: DataFrame with columns [customer_id, total_spent, order_count, 
              avg_order_value, favorite_category]
     """
-    pass
+    customers = pd.DataFrame()
+    customers["customer_id"] = df["customer_id"].unique()
+    customers["total_spent"] = df.groupby("customer_id")["total_amount"].sum()
+    customers["order_count"] = df.groupby("customer_id")["quantity"].sum()
+    customers["avg_order_value"] = customers["total_spent"] / customers["order_count"]
+    customers["favorite_category"] = df.groupby("customer_id")["category"].mode()
+    customers.drop(index="C000") #dropping the filler customer made earlier to fill missing customer ids
+    return customers
 
 def weekend_vs_weekday(df):
     """
     Compare weekend vs weekday sales.
     Returns: Dict with weekend and weekday total sales and percentages.
     """
-    pass
+    comparison = {
+        "weekend": {
+            "total_sales": 0,
+            "percentage": 0
+        },
+        "weekdays": {
+            "total_sales": 0,
+            "percentage": 0
+        }
+    }
+    weekend_sales = df[df["is_weekend"] == True]["total_amount"].sum()
+    weekday_sales = df[df["is_weekend"] == False]["total_amount"].sum()
+    comparison["weekend"]["total_sales"] = weekend_sales
+    comparison["weekend"]["percentage"] = weekend_sales / (weekend_sales + weekday_sales)
+    comparison["weekdays"]["total_sales"] = weekday_sales
+    comparison["weekdays"]["percentage"] = weekday_sales / (weekend_sales + weekday_sales)
+
+    return comparison
