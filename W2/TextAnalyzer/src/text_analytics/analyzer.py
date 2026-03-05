@@ -1,6 +1,6 @@
 from collections import Counter, defaultdict
-from .models import WordFrequency, NGram, DocumentStats, AnalysisResult
-from .tokenizer import tokenize, get_sentences, get_ngrams, remove_stopwords
+from models import WordFrequency, NGram, DocumentStats, AnalysisResult
+from tokenizer import tokenize, get_sentences, get_ngrams, remove_stopwords
 
 class TextAnalyzer:
     """Analyzes text documents for various metrics."""
@@ -10,20 +10,34 @@ class TextAnalyzer:
         self.words = tokenize(text)
         self.sentences = get_sentences(text)
         self.word_counter = Counter(self.words)
+        self.total_words = sum(self.word_counter.values())
     
     def get_word_frequencies(self, top_n=20, exclude_stopwords=True):
         """
         Get top N word frequencies.
         Returns: List of WordFrequency namedtuples
         """
-        pass
+        if exclude_stopwords:
+            self.words = remove_stopwords(self.words)
+
+        counter = Counter(self.words)
+        top_common = counter.most_common(top_n)
+        common_words = [WordFrequency(word, n, round((n / self.total_words) * 100 , 2)) for word,n in top_common]
+
+        return common_words
     
     def get_bigrams(self, top_n=10):
         """
         Get top N bigrams (2-word phrases).
         Returns: List of NGram namedtuples
         """
-        pass
+        bigrams = get_ngrams(self.words, 2)
+        
+        # Get frequency of n-grams
+        
+        # Sort n-grams by frequency
+
+        # Return top n
     
     def get_trigrams(self, top_n=10):
         """
@@ -52,3 +66,6 @@ class TextAnalyzer:
         Returns: AnalysisResult namedtuple
         """
         pass
+
+analyzer = TextAnalyzer("hello hello hello hello !! ! ! 1! my name is ben i like to go partying and get crunkt")
+print(analyzer.get_word_frequencies())

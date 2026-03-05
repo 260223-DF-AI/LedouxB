@@ -11,7 +11,9 @@ def tokenize(text):
     Returns: List of words
     """
     # string.punctuation
-    words = text.lower().strip(",.?!").split()
+    punctuation = ",.?!"
+    text = ''.join(char for char in text if char not in punctuation)
+    words = text.lower().strip().split()
     return words
 
 def get_sentences(text):
@@ -37,7 +39,7 @@ def get_ngrams(words, n):
     for i in range(len(words)-n+1):
         ngrams.append(tuple(words[i:i+n]))
 
-    print(ngrams)
+    return ngrams
 
 def remove_stopwords(words, stopwords=None):
     """
