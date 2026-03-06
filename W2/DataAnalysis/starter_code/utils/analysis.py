@@ -76,10 +76,11 @@ def add_time_features(df):
     - quarter
     - is_weekend (boolean)
     """
-    df["day_of_week"] = df["datetime"].dt.dayofweek
-    df["month"] = df["datetime"].dt.month
-    df["quarter"] = df["datetime"].dt.quarter
+    df["day_of_week"] = df["order_date"].dt.dayofweek
+    df["month"] = df["order_date"].dt.month
+    df["quarter"] = df["order_date"].dt.quarter
     df["is_weekend"] = df["day_of_week"] >= 5
+    return df
 
 def sales_by_category(df):
     """
@@ -89,7 +90,10 @@ def sales_by_category(df):
     """
     sales = (
         df.groupby("category", as_index=False)
-        .agg(total_sales=("total_amount", "sum"), order_count=("quantity", "sum"))
+        .agg(
+            total_sales=("total_amount", "sum"),
+            order_count=("quantity", "sum")
+        )
     )
     sales["avg_order_value"] = sales["total_sales"] / sales["order_count"]
     return sales.sort_values("total_sales", ascending=False).reset_index(drop=True)
@@ -113,7 +117,10 @@ def top_products(df, n=10):
     """
     top = (
         df.groupby(["product_name", "category"], as_index=False)
-        .agg(total_sales=("total_amount", "sum"), units_sold=("quantity", "sum"))
+        .agg(
+            total_sales=("total_amount", "sum"),
+            units_sold=("quantity", "sum")
+        )
     )
     return top.sort_values("total_sales", ascending=False).head(n=n).reset_index(drop=True)
 
@@ -122,11 +129,15 @@ def daily_sales_trend(df):
     Calculate daily sales totals.
     Returns: DataFrame with columns [date, total_sales, order_count]
     """
-    daily = pd.DataFrame()
-    daily["date"] = df["order_date"].unique()
-    daily["total_sales"] = df.groupby("order_date")["total_amount"].sum()
-    daily["order_count"] = df.groupby("order_date")["quantity"].sum()
-    return daily
+    daily = (
+        df.groupby("order_date", as_index=False)
+        .agg(
+            total_sales=("total_amount", "sum"),
+            order_count=("quantity", "sum")
+        )
+    )
+    daily = daily.rename(columns={"order_date": "date"})
+    return daily.sort_values("date", ascending=True).reset_index(drop=True)
 
 def customer_analysis(df):
     """
@@ -134,14 +145,19 @@ def customer_analysis(df):
     Returns: DataFrame with columns [customer_id, total_spent, order_count, 
              avg_order_value, favorite_category]
     """
-    customers = pd.DataFrame()
-    customers["customer_id"] = df["customer_id"].unique()
-    customers["total_spent"] = df.groupby("customer_id")["total_amount"].sum()
-    customers["order_count"] = df.groupby("customer_id")["quantity"].sum()
+    customers = (
+        df.groupby("customer_id", as_index=False)
+        .agg(
+            total_spent=("total_amount", "sum"),
+            order_count=("quantity", "sum"),
+            avg_order_value=("total_amount", "sum"), #divide by order count later
+            favorite_category=("category", lambda x: pd.Series.mode(x)[0])
+        )
+    )
     customers["avg_order_value"] = customers["total_spent"] / customers["order_count"]
-    customers["favorite_category"] = df.groupby("customer_id")["category"].mode()
-    customers.drop(index="C000") #dropping the filler customer made earlier to fill missing customer ids
-    return customers
+    
+    customers.drop(index="C000", errors="ignore") #dropping the filler customer made earlier to fill missing customer ids
+    return customers.sort_values("customer_id", ascending=True).reset_index(drop=True)
 
 def weekend_vs_weekday(df):
     """
@@ -158,11 +174,11 @@ def weekend_vs_weekday(df):
             "percentage": 0
         }
     }
-    weekend_sales = df[df["is_weekend"] == True]["total_amount"].sum()
-    weekday_sales = df[df["is_weekend"] == False]["total_amount"].sum()
+    weekend_sales = int(df[df["is_weekend"] == True]["total_amount"].sum())
+    weekday_sales = int(df[df["is_weekend"] == False]["total_amount"].sum())
     comparison["weekend"]["total_sales"] = weekend_sales
-    comparison["weekend"]["percentage"] = weekend_sales / (weekend_sales + weekday_sales)
+    comparison["weekend"]["percentage"] = round(float(100 * weekend_sales / (weekend_sales + weekday_sales)), 2)
     comparison["weekdays"]["total_sales"] = weekday_sales
-    comparison["weekdays"]["percentage"] = weekday_sales / (weekend_sales + weekday_sales)
+    comparison["weekdays"]["percentage"] = round(float(100 * weekday_sales / (weekend_sales + weekday_sales)), 2)
 
     return comparison
