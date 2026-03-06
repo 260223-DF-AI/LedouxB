@@ -90,32 +90,32 @@ def cache(max_size=128):
         expensive_computation.cache_info()
         expensive_computation.cache_clear()
     """
-    cache = {}
+    c = {}
     c_info = {
         "max_size": max_size,
-        "curr_size": len(cache),
+        "curr_size": len(c),
         "hits": 0,
         "misses": 0
     }
-    @cache(max_size)
     def decorator(func):
-        func.cache_info = lambda : (c_info, cache)
-        func.cache_clear = lambda : cache.clear()
+        func.cache_info = lambda : (c_info, c)
+        func.cache_clear = lambda : c.clear()
         @wraps(func)
         def wrapper(*args, **kwargs):
             result = None
-            if (args, kwargs) not in cache.keys():
+            cache_key = (args, tuple(sorted(kwargs.items())))
+            if cache_key not in c.keys():
                 # Miss, remove oldest item in cache if filled
-                if len(cache) == max_size:
-                    first = next(iter(cache.keys()))
-                    del(cache[first])
-                    c_info["misses"] += 1
+                if len(c) == max_size:
+                    first = next(iter(c.keys()))
+                    del(c[first])
+                c_info["misses"] += 1
                 result = func(*args, **kwargs)
             else:
                 # Hit, pop result from cache to be moved to end
-                result = cache.pop((args, kwargs))
+                result = c.pop(cache_key)
                 c_info["hits"] += 1
-            cache[(args, kwargs)] = result
-            return cache[(args, kwargs)]
+            c[cache_key] = result
+            return c[cache_key]
         return wrapper
     return decorator

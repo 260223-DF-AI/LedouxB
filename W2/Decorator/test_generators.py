@@ -1,5 +1,5 @@
 import pytest
-from ..generators import read_lines, batch, filter_by
+from generators import read_lines, batch, filter_by
 
 def test_batch_correct_sizes():
     """Batch should yield correct batch sizes."""
