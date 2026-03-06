@@ -99,7 +99,7 @@ def cache(max_size=128):
     }
     @cache(max_size)
     def decorator(func):
-        func.cache_info = lambda : c_info
+        func.cache_info = lambda : (c_info, cache)
         func.cache_clear = lambda : cache.clear()
         @wraps(func)
         def wrapper(*args, **kwargs):
