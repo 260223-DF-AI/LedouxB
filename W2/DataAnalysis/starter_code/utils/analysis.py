@@ -8,10 +8,9 @@ def load_data(filepath):
     - Return a clean DataFrame
     """
     df = pd.read_csv(filepath)
-    clean_data(df)
-    explore_data(df)
-
-
+    df = clean_data(df)
+    df = explore_data(df)
+    return df
 
 def explore_data(df):
     """
@@ -37,30 +36,33 @@ def clean_data(df):
     - Standardize text columns (strip whitespace, consistent case)
     - Add calculated columns: 'total_amount' = quantity * unit_price
     """
-    df.drop_duplicates()
+    df = df.drop_duplicates()
 
-    # Fill/Drop Strategy: Anything filled is not considered critical to records and should not result in a dropped entry
-    # order_id: Fill w/ 0000
-    df["order_id"].fillna("0000")
-    # customer_id: Fill w/ C000
-    df["customer_id"].fillna("C000")
-    # order_date: Fill w/ unix common epoch
-    df["order_date"].fillna("1970-01-01")
-    # product_name: Fill w/ generic product name "Product"
-    df["product_name"].fillna("Product")
-    # category: Fill w/ "Miscellaneous"
-    df["category"].fillna("Miscellaneous")
-    # quantity: Fill w/ 1
-    df["quantity"].fillna(1)
-    # unit_price: Drop, could find entry with matching product_name and guess price based on quantity and price in the future
-    df.dropna(subset=["unit_price"])
-    # region: Fill w/ "Global" as general coverage. NOTE: Interplanetary locations will be grouped in if missing region value
-    df["region"].fillna("Global")
-
+    df["order_id"] = pd.to_numeric(df["order_id"])
     df["order_date"] = pd.to_datetime(df["order_date"])
     df["product_name"] = df["product_name"].str.lower().str.strip()
     df["category"] = df["category"].str.capitalize().str.strip()
     df["region"] = df["region"].str.capitalize().str.strip()
+
+    # Fill/Drop Strategy: Anything filled is not considered critical to records and should not result in a dropped entry
+    # order_id: Fill w/ 0000
+    df["order_id"] = df["order_id"].fillna(0)
+    # customer_id: Fill w/ C000
+    df["customer_id"] = df["customer_id"].fillna("C000")
+    # order_date: Fill w/ unix common epoch
+    df["order_date"] = df["order_date"].fillna(pd.to_datetime("1970-01-01"))
+    # product_name: Fill w/ generic product name "Product"
+    df["product_name"] = df["product_name"].fillna("Product")
+    # category: Fill w/ "Miscellaneous"
+    df["category"] = df["category"].fillna("Miscellaneous")
+    # quantity: Fill w/ 1
+    df["quantity"] = df["quantity"].fillna(1)
+    # unit_price: Drop rows missing unit_price since it is required for calculations
+    df = df.dropna(subset=["unit_price"])
+    # region: Fill w/ "Global" as general coverage. NOTE: Interplanetary locations will be grouped in if missing region value
+    df["region"] = df["region"].fillna("Global")
+
+
 
     df["total_amount"] = df["quantity"] * df["unit_price"]
 
@@ -85,35 +87,35 @@ def sales_by_category(df):
     Returns: DataFrame with columns [category, total_sales, order_count, avg_order_value]
     Sorted by total_sales descending.
     """
-    sales = pd.DataFrame()
-    sales["category"] = df["category"].unique()
-    sales["total_sales"] = df.groupby("category")["total_amount"].sum()
-    sales["order_count"] = df.groupby("category")["quantity"].sum()
+    sales = (
+        df.groupby("category", as_index=False)
+        .agg(total_sales=("total_amount", "sum"), order_count=("quantity", "sum"))
+    )
     sales["avg_order_value"] = sales["total_sales"] / sales["order_count"]
-    return sales
+    return sales.sort_values("total_sales", ascending=False).reset_index(drop=True)
 
 def sales_by_region(df):
     """
     Calculate total sales by region.
     Returns: DataFrame with columns [region, total_sales, percentage_of_total]
     """
-    sales = pd.DataFrame()
-    sales["region"] = df["region"].unique()
-    sales["total_sales"] = df.groupby("region")["total_amount"].sum()
-    sales["percentage_of_total"] = sales["total_sales"] / sales["total_sales"].sum()
-    return sales
+    sales = (
+        df.groupby("region", as_index=False)
+        .agg(total_sales=("total_amount", "sum"))
+    )
+    sales["percentage_of_total"] = (sales["total_sales"] / sales["total_sales"].sum()).round(4) * 100
+    return sales.sort_values("total_sales", ascending=False).reset_index(drop=True)
 
 def top_products(df, n=10):
     """
     Find top N products by total sales.
     Returns: DataFrame with columns [product_name, category, total_sales, units_sold]
     """
-    top = pd.DataFrame()
-    top["product_name"] = df["product_name"].unique()
-    top["category"] = df.groupby("product_name")["category"]
-    top["total_sales"] = df.groupby("product_name")["total_amount"].sum()
-    top["units_sold"] = df.groupby("product_name")["quantity"].sum()
-    return top.sort_values("total_sales", ascending=False).head(n=n)
+    top = (
+        df.groupby(["product_name", "category"], as_index=False)
+        .agg(total_sales=("total_amount", "sum"), units_sold=("quantity", "sum"))
+    )
+    return top.sort_values("total_sales", ascending=False).head(n=n).reset_index(drop=True)
 
 def daily_sales_trend(df):
     """

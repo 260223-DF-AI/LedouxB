@@ -21,25 +21,66 @@ def test_clean_data_removes_duplicates(sample_data):
     # Arrange
     df: pd.DataFrame = sample_data
     df.loc[len(df)] = df.iloc[1]
-    expected = True
+    expected = False # expect any duplicates to return false
     
     # Act
     df = clean_data(df)
-    actual = True
-    for row in df:
-        for compared_row in df:
-            if row == compared_row:
-                actual = False
+    actual = df.duplicated().any()
 
     # Assert
     assert actual == expected
 
 def test_sales_by_category_calculation(sample_data):
     """Test that category totals are calculated correctly."""
-    pass
+    # Arrange
+    expected = pd.DataFrame({
+        "category": ["Electronics"],
+        "total_sales": 75.00,
+        "order_count": 6,
+        "avg_order_value": 75/6
+    })
+
+    # Act
+    clean_df = clean_data(sample_data)
+    actual = sales_by_category(clean_df)
+
+    # Assert
+    assert actual.equals(expected)
 
 def test_top_products_returns_correct_count(sample_data):
     """Test that top_products returns requested number of items."""
-    pass
+    # Arrange
+    expected = pd.DataFrame({
+        "product_name": ["widget"],
+        "category": ["Electronics"],
+        "total_sales": [50.00],
+        "units_sold": [5]
+    })
 
-# Add at least 5 more tests
+    # Act
+    clean_df = clean_data(sample_data)
+    actual = top_products(clean_df, 1)
+
+    print(expected)
+    print(actual)
+
+    # Assert
+    assert actual.equals(expected)
+
+# TODO: Add at least 5 more tests
+
+def test_sales_by_region_calculation(sample_data):
+    """Test that region totals are calculated correctly."""
+    # Arrange
+    expected = pd.DataFrame({
+        "region": ["North", "South"],
+        "total_sales": [50.00, 25.00],
+        "percentage_of_total": [round(100 * 50/75, 2), round(100 * 25/75, 2)]
+    })
+
+    # Act
+    clean_df = clean_data(sample_data)
+    actual = sales_by_region(clean_df)
+
+    # Assert
+    assert actual.equals(expected)
