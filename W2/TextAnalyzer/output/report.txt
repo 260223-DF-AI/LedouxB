@@ -1,0 +1,46 @@
+=== Text Analysis Report ===
+Generated: 2026-03-06
+
+Document Statistics:
+- Word Count: 776
+- Unique Words: 58
+- Sentence Count: 86
+- Average Word Length: 3.13 characters
+- Average Sentence Length: 37.6 words
+
+Top 20 Words:
+1. not (82) - 10.57%
+2. i (71) - 9.15%
+3. them (58) - 7.47%
+4. a (56) - 7.22%
+5. like (44) - 5.67%
+6. in (40) - 5.15%
+7. do (37) - 4.77%
+8. you (34) - 4.38%
+9. would (27) - 3.48%
+10. and (26) - 3.35%
+11. eat (23) - 2.96%
+12. with (18) - 2.32%
+13. will (18) - 2.32%
+14. could (14) - 1.8%
+15. sam-i-am (11) - 1.42%
+16. eggs (11) - 1.42%
+17. ham (11) - 1.42%
+18. here (11) - 1.42%
+19. the (11) - 1.42%
+20. green (10) - 1.29%
+
+Top 10 Bigrams:
+1. "('not', 'like')" (35)
+2. "('i', 'do')" (34)
+3. "('do', 'not')" (34)
+4. "('like', 'them')" (32)
+5. "('in', 'a')" (29)
+6. "('eat', 'them')" (21)
+7. "('with', 'a')" (18)
+8. "('not', 'in')" (18)
+9. "('i', 'will')" (15)
+10. "('i', 'would')" (14)
+
+Readability:
+- Flesch Reading Ease: 100 (Very easy (5th grade))

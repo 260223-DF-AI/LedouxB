@@ -38,4 +38,4 @@ def calculate_readability(analyzer):
     else:
         interpretation = "Very easy (5th grade)"
     
-    return {score: interpretation}
+    return (score, interpretation)

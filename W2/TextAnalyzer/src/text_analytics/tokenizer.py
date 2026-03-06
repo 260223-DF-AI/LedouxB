@@ -1,6 +1,6 @@
 import re
 from collections import Counter
-from models import NGram
+from .models import NGram
 
 def tokenize(text):
     """
