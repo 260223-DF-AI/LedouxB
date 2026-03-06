@@ -7,7 +7,11 @@ def create_category_bar_chart(category_data, output_path):
     - Use a professional color scheme
     - Save to output_path
     """
-    pass
+    plt.bar() #how is data input
+    plt.xlabel("Category")
+    plt.ylabel("Sales")
+    plt.title("Sales by Category")
+    plt.show() #save to output path
 
 def create_regional_pie_chart(region_data, output_path):
     """
