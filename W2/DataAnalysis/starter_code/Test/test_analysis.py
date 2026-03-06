@@ -18,7 +18,21 @@ def sample_data():
 
 def test_clean_data_removes_duplicates(sample_data):
     """Test that clean_data removes duplicate rows."""
-    pass
+    # Arrange
+    df: pd.DataFrame = sample_data
+    df.loc[len(df)] = df.iloc[1]
+    expected = True
+    
+    # Act
+    df = clean_data(df)
+    actual = True
+    for row in df:
+        for compared_row in df:
+            if row == compared_row:
+                actual = False
+
+    # Assert
+    assert actual == expected
 
 def test_sales_by_category_calculation(sample_data):
     """Test that category totals are calculated correctly."""

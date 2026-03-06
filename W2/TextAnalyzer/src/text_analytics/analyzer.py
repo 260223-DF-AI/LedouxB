@@ -59,7 +59,13 @@ class TextAnalyzer:
         sentence_lengths = [len(s) for s in self.sentences]
         avg_word_length = round(sum(word_lengths) / len(self.words), 2)
         avg_sentence_length = round(sum(sentence_lengths) / len(self.sentences), 2)
-        return DocumentStats(self.word_counter.total(), len(self.unique_words), len(get_sentences(self.text)), avg_word_length, avg_sentence_length)
+        return DocumentStats(
+            self.word_counter.total(),
+            len(self.unique_words),
+            len(get_sentences(self.text)),
+            avg_word_length,
+            avg_sentence_length
+        )
 
     
     def get_word_length_distribution(self):

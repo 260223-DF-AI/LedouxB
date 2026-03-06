@@ -41,30 +41,30 @@ def clean_data(df):
 
     # Fill/Drop Strategy: Anything filled is not considered critical to records and should not result in a dropped entry
     # order_id: Fill w/ 0000
-    df["order_id"].fillna["0000"]
+    df["order_id"].fillna("0000")
     # customer_id: Fill w/ C000
-    df["customer_id"].fillna["C000"]
+    df["customer_id"].fillna("C000")
     # order_date: Fill w/ unix common epoch
-    df["order_date"].fillna["1970-01-01"]
+    df["order_date"].fillna("1970-01-01")
     # product_name: Fill w/ generic product name "Product"
-    df["product_name"].fillna["Product"]
+    df["product_name"].fillna("Product")
     # category: Fill w/ "Miscellaneous"
-    df["category"].fillna["Miscellaneous"]
+    df["category"].fillna("Miscellaneous")
     # quantity: Fill w/ 1
-    df["quantity"].fillna[1]
+    df["quantity"].fillna(1)
     # unit_price: Drop, could find entry with matching product_name and guess price based on quantity and price in the future
     df.dropna(subset=["unit_price"])
     # region: Fill w/ "Global" as general coverage. NOTE: Interplanetary locations will be grouped in if missing region value
-    df["region"].fillna["Global"]
+    df["region"].fillna("Global")
 
     df["order_date"] = pd.to_datetime(df["order_date"])
-    df["product_name"] = df["product_name"].str.lower().strip()
-    df["category"] = df["category"].str.capitalize().strip()
-    df["region"] = df["region"].str.capitalize().strip()
+    df["product_name"] = df["product_name"].str.lower().str.strip()
+    df["category"] = df["category"].str.capitalize().str.strip()
+    df["region"] = df["region"].str.capitalize().str.strip()
 
     df["total_amount"] = df["quantity"] * df["unit_price"]
 
-    # return df #?
+    return df
 
 def add_time_features(df):
     """

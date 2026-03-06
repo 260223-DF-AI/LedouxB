@@ -11,14 +11,14 @@ def flesch_reading_ease(word_count, sentence_count, syllable_count):
     - 30-50: Difficult (college)
     - 0-30: Very difficult (college graduate)
     """
-    return 206.835 - (1.015 * (word_count/sentence_count)) - (84.6 * (syllable_count/word_count))
+    return round(206.835 - (1.015 * (word_count/sentence_count)) - (84.6 * (syllable_count/word_count)))
 
 def count_syllables(word):
     """
     Count syllables in a word.
     Simple heuristic: count vowel groups.
     """
-    vowel_groups = re.findall('[aeiouAEIOU]+', word)
+    vowel_groups = re.findall('[aeiouAEIOU]+', word) #count vowels, ignore ending e
     return len(vowel_groups)
 
 def calculate_readability(analyzer):
@@ -28,6 +28,14 @@ def calculate_readability(analyzer):
     """
     num_syllables = sum(count_syllables(w) for w in analyzer.words)
     score = flesch_reading_ease(len(analyzer.words), len(analyzer.sentences), num_syllables)
-    return {"score": score,
-            #descriptions
-            }
+    interpretation = ""
+    if score < 30:
+        interpretation = "Very difficult (college graduate)"
+    elif score < 60:
+        interpretation = "Difficult (college)"
+    elif score < 80:
+        interpretation = "Standard (8th-9th grade)"
+    else:
+        interpretation = "Very easy (5th grade)"
+    
+    return {score: interpretation}
