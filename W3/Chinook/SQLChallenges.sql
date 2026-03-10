@@ -30,29 +30,47 @@ select * from actor where first_name = 'John';
 
 -- BASIC CHALLENGES
 -- List all customers (full name, customer id, and country) who are not in the USA
-
+SELECT
+    first_name || ' ' || last_name AS "full name",
+    customer_id AS "customer id",
+    country
+FROM customer
+WHERE country != 'USA'; 
 
 -- List all customers from Brazil
-
+SELECT
+    first_name || ' ' || last_name AS "full name",
+    customer_id AS "customer id",
+    country
+FROM customer
+WHERE country = 'Brazil'; 
 
 -- List all sales agents
-
+SELECT
+    first_name || ' ' || last_name AS "full name",
+    title
+FROM employee
+WHERE title LIKE '%Sales%Agent%';
 
 -- Retrieve a list of all countries in billing addresses on invoices
-
+SELECT DISTINCT billing_country FROM invoice;
 
 -- Retrieve how many invoices there were in 2009, and what was the sales total for that year?
-
+SELECT COUNT(*), SUM(total) FROM invoice
+WHERE EXTRACT(YEAR FROM invoice_date) = 2009
 
 -- (challenge: find the invoice count sales total for every year using one query)
-
+SELECT COUNT(*), SUM(total), EXTRACT(YEAR FROM invoice_date) FROM invoice
+GROUP BY EXTRACT(YEAR FROM invoice_date);
 
 -- how many line items were there for invoice #37
-
+SELECT SUM(quantity) FROM invoice_line
+WHERE invoice_id = 37;
 
 -- how many invoices per country? BillingCountry  # of invoices -
 -- Retrieve the total sales per country, ordered by the highest total sales first.
-
+SELECT COUNT(*), billing_country FROM invoice
+GROUP BY billing_country;
 
 
 -- JOINS CHALLENGES
