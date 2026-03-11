@@ -9,7 +9,7 @@ def load_data(filepath):
     """
     df = pd.read_csv(filepath)
     df = clean_data(df)
-    print(df)
+    # print(df)
     return df
 
 def explore_data(df):
