@@ -9,7 +9,7 @@ def load_data(filepath):
     """
     df = pd.read_csv(filepath)
     df = clean_data(df)
-    df = explore_data(df)
+    print(df)
     return df
 
 def explore_data(df):
@@ -25,7 +25,7 @@ def explore_data(df):
     print(f"Data types: {df.dtypes}")
     print(f"Missing values: {df.isnull().sum()}")
     print(f"Average order quantity: {df["quantity"].mean()}")
-    print(f"Average product price: {df["price"].mean()}")
+    print(f"Average product price: {df["unit_price"].mean()}")
     print(f"Date range: {df["order_date"].min()} to {df["order_date"].max()}")
 
 def clean_data(df):
@@ -182,3 +182,7 @@ def weekend_vs_weekday(df):
     comparison["weekdays"]["percentage"] = round(float(100 * weekday_sales / (weekend_sales + weekday_sales)), 2)
 
     return comparison
+
+if __name__ == "__main__":
+    df = load_data("../data/orders.csv")
+    explore_data(df)
