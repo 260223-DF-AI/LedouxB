@@ -64,7 +64,7 @@ SELECT COUNT(*), SUM(total), EXTRACT(YEAR FROM invoice_date) FROM invoice
 GROUP BY EXTRACT(YEAR FROM invoice_date);
 
 -- how many line items were there for invoice #37
-SELECT SUM(quantity) FROM invoice_line
+SELECT COUNT(*) FROM invoice_line
 WHERE invoice_id = 37;
 
 -- how many invoices per country? BillingCountry  # of invoices -
@@ -75,29 +75,50 @@ GROUP BY billing_country;
 
 -- JOINS CHALLENGES
 -- Every Album by Artist
-
+SELECT album.title, artist.name FROM album
+JOIN artist on album.artist_id = artist.artist_id;
 
 -- (inner keyword is optional for inner join)
 -- All songs of the rock genre
-
+SELECT track.name, genre.name FROM track
+JOIN genre ON genre.genre_id = track.genre_id
+WHERE genre.name = 'Rock';
 
 -- Show all invoices of customers from brazil (mailing address not billing)
-
+SELECT * FROM invoice i
+JOIN customer c ON c.customer_id = i.customer_id
+WHERE c.country = 'Brazil';
 
 -- Show all invoices together with the name of the sales agent for each one
-
+SELECT *, e.first_name || ' ' || e.last_name AS "Sales Rep" FROM invoice i
+JOIN customer c ON i.customer_id = c.customer_id
+JOIN employee e ON e.employee_id = c.support_rep_id;
 
 -- Which sales agent made the most sales in 2009?
-
+SELECT e.first_name || ' ' || e.last_name AS "Sales Rep", SUM(total) as sum_total FROM invoice i
+JOIN customer c ON i.customer_id = c.customer_id
+JOIN employee e ON e.employee_id = c.support_rep_id
+WHERE EXTRACT(YEAR FROM i.invoice_date) = 2009
+GROUP BY e.employee_id
+ORDER BY sum_total DESC
+LIMIT(1);
 
 -- How many customers are assigned to each sales agent?
-
+SELECT e.first_name || ' ' || e.last_name AS "Sales Rep", COUNT(*) FROM customer c
+JOIN employee e ON c.support_rep_id = e.employee_id
+GROUP BY e.employee_id;
 
 -- Which track was purchased the most in 2010?
-
+SELECT track.name, SUM(quantity) AS total FROM invoice_line
+JOIN track ON invoice_line.track_id = track.track_id
+JOIN invoice ON invoice.invoice_id = invoice_line.invoice_id
+WHERE EXTRACT(YEAR FROM invoice.invoice_date) = 2010
+GROUP BY track.name
+ORDER BY total DESC, track.name ASC
+LIMIT(1);
 
 -- Show the top three best selling artists.
-
+SELECT artist.name, 
 
 -- Which customers have the same initials as at least one other customer?
 
