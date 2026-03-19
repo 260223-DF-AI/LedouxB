@@ -118,10 +118,18 @@ ORDER BY total DESC, track.name ASC
 LIMIT(1);
 
 -- Show the top three best selling artists.
-SELECT artist.name, 
+SELECT ar.name, SUM(i.quantity) FROM invoice_line i
+JOIN track t ON i.track_id = t.track_id
+JOIN album al ON t.album_id = al.album_id
+JOIN artist ar ON al.artist_id = ar.artist_id
+GROUP BY ar.name
+ORDER BY SUM(i.quantity) DESC;
 
 -- Which customers have the same initials as at least one other customer?
-
+-- SELECT c1.customer_id, c2.customer_id, COUNT(*) FROM customer c1
+-- JOIN customer c2 ON c1.customer_id = c2.customer_id
+-- WHERE SUBSTRING(c1.first_name, 1, 1) = SUBSTRING(c2.first_name, 1, 1)
+-- AND SUBSTRING(c1.last_name, 1, 1) = SUBSTRING(c2.last_name, 1, 1);
 
 -- Which countries have the most invoices?
 
