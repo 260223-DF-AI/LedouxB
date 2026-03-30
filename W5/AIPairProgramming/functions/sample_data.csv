@@ -1,0 +1,51 @@
+order_id,customer_name,email,order_date,amount,status
+ORD1000,Customer 0,customer0@example.com,2024-02-05,468.28,pending
+ORD1001,Customer 1,customer1@example.com,2024-03-31,496.62,pending
+ORD1002,Customer 2,customer2@example.com,2024-03-30,146.5,completed
+ORD1003,Customer 3,customer3@example.com,2024-01-29,312.56,completed
+ORD1004,Customer 4,customer4@example.com,2024-01-28,336.04,completed
+ORD1005,,customer5@example.com,2024-01-03,90.64,completed
+ORD1006,Customer 6,customer6@example.com,2024-03-19,77.1,completed
+ORD1007,Customer 7,customer7@example.com,2024-01-03,33.79,completed
+ORD1008,Customer 8,customer8@example.com,2024-03-29,306.8,pending
+ORD1009,Customer 9,customer9@example.com,2024-01-11,363.86,cancelled
+ORD1010,Customer 10,customer10@example.com,2024-01-22,-50.0,cancelled
+ORD1011,Customer 11,customer11@example.com,2024-03-17,116.82,completed
+ORD1012,Customer 12,customer12@example.com,2024-02-20,358.68,cancelled
+ORD1013,Customer 13,customer13@example.com,2024-03-05,114.04,cancelled
+ORD1014,Customer 14,customer14@example.com,2024-03-18,219.67,completed
+ORD1015,,customer15@example.com,2024-02-25,269.98,pending
+ORD1016,Customer 16,customer16@example.com,2024-02-28,405.09,pending
+ORD1017,Customer 17,customer17@example.com,2024-01-22,404.71,cancelled
+ORD1018,Customer 18,customer18@example.com,2024-03-07,261.77,cancelled
+ORD1019,Customer 19,customer19@example.com,2024-02-25,329.18,pending
+ORD1020,Customer 20,customer20@example.com,2024-02-29,-75.5,completed
+ORD1021,Customer 21,customer21@example.com,2024-03-30,31.86,cancelled
+ORD1022,Customer 22,customer22@example.com,2024-02-07,280.01,pending
+ORD1023,Customer 23,customer23@example.com,2024-01-25,220.14,cancelled
+ORD1024,Customer 24,customer24@example.com,2024-03-26,458.21,cancelled
+ORD1025,,customer25@example.com,2024-03-29,32.46,pending
+ORD1026,Customer 26,customer26@example.com,2024-03-25,290.43,completed
+ORD1027,Customer 27,customer27@example.com,2024-02-14,91.5,completed
+ORD1028,Customer 28,customer28@example.com,2024-02-01,383.25,cancelled
+ORD1029,Customer 29,customer29@example.com,2024-01-13,459.49,cancelled
+ORD1030,Customer 30,customer30@example.com,2024-01-12,284.08,completed
+ORD1031,Customer 31,customer31@example.com,2024-01-23,378.92,pending
+ORD1032,Customer 32,customer32@example.com,2024-02-22,21.91,pending
+ORD1033,Customer 33,customer33@example.com,2024-01-01,76.23,cancelled
+ORD1034,Customer 34,customer34@example.com,2024-02-01,177.22,cancelled
+ORD1035,Customer 35,invalidemail.com,2024-01-29,281.88,pending
+ORD1036,Customer 36,customer36@example.com,2024-02-25,68.29,pending
+ORD1037,Customer 37,customer37@example.com,2024-01-18,244.47,cancelled
+ORD1038,Customer 38,customer38@example.com,2024-03-23,292.47,completed
+ORD1039,Customer 39,customer39@example.com,2024-02-26,145.47,completed
+ORD1030,Customer 40,customer40@example.com,2024-01-01,492.09,pending
+ORD1041,Customer 41,customer41@example.com,2024-02-14,88.99,cancelled
+ORD1042,Customer 42,customer42@example.com,2024-01-30,437.37,pending
+ORD1043,Customer 43,customer43@example.com,2024-03-01,85.9,cancelled
+ORD1044,Customer 44,customer44@example.com,2024-01-19,323.53,pending
+ORD1045,Customer 45,customer45@example.com,2026-04-25,360.08,cancelled
+ORD1046,Customer 46,customer46@example.com,2024-03-26,318.94,cancelled
+ORD1047,Customer 47,customer47@example.com,2024-01-05,190.01,pending
+ORD1048,Customer 48,customer48@example.com,2024-01-03,161.6,shipped
+ORD1049,Customer 49,customer49@example.com,2024-02-02,173.09,cancelled
