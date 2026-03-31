@@ -2,12 +2,6 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 
-# Toy Dataset
-# X: Time on site (minutes)
-# y: Purchased (1) or Did Not Purchase (0)
-X = torch.tensor([[0.5], [1.0], [2.5], [5.0], [8.0], [12.0]], dtype=torch.float32)
-y = torch.tensor([[0.0], [0.0], [0.0], [1.0], [1.0], [1.0]], dtype=torch.float32)
-
 class PurchaseClassifier(nn.Module):
     """
     Task 1: Build the Model Architecture
@@ -22,7 +16,7 @@ class PurchaseClassifier(nn.Module):
         # TODO: Route x through the linear layer and return it
         return self.linear(x)
 
-def train_classifier(lr: float = 0.5, step_size: int = 20, gamma: float = 0.5):
+def train_classifier(X, y, lr: float = 0.5, step_size: int = 20, gamma: float = 0.5):
     """
     Task 2: Train the Model with Scheduling
     """
@@ -40,6 +34,7 @@ def train_classifier(lr: float = 0.5, step_size: int = 20, gamma: float = 0.5):
     scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=step_size, gamma=gamma)
     
     epochs = 100
+
     
     print("--- Starting Training ---")
     for epoch in range(epochs):
@@ -47,10 +42,10 @@ def train_classifier(lr: float = 0.5, step_size: int = 20, gamma: float = 0.5):
 
         # --- THE 5 STEPS OF TRAINING ---
         # 1. Forward pass
-        predictions = model(batch_x)
+        predictions = model(X)
         
         # 2. Compute Loss
-        loss = criterion(predictions, batch_y)
+        loss = criterion(predictions, y)
         
         # 3. Zero gradients
         optimizer.zero_grad()
@@ -83,4 +78,10 @@ def train_classifier(lr: float = 0.5, step_size: int = 20, gamma: float = 0.5):
         print(f"Raw Output (Logit) for 10.0 mins: {pred_high:.4f}")
 
 if __name__ == "__main__":
-    train_classifier()
+    # Toy Dataset
+    # X: Time on site (minutes)
+    # y: Purchased (1) or Did Not Purchase (0)
+    X = torch.tensor([[0.5], [1.0], [2.5], [5.0], [8.0], [12.0]], dtype=torch.float32)
+    y = torch.tensor([[0.0], [0.0], [0.0], [1.0], [1.0], [1.0]], dtype=torch.float32)
+
+    train_classifier(X, y)
