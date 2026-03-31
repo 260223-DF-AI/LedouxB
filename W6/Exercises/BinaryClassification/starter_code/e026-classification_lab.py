@@ -12,58 +12,58 @@ class PurchaseClassifier(nn.Module):
     """
     Task 1: Build the Model Architecture
     """
-    def __init__(self):
+    def __init__(self, input_size: int = 1, output_size: int = 1):
         # TODO: Initialize the parent class
-        
+        super().__init__()
         # TODO: Define a linear layer (1 input -> 1 output)
-        pass
+        self.linear = nn.Linear(input_size, output_size)
         
     def forward(self, x):
         # TODO: Route x through the linear layer and return it
-        return None
+        return self.linear(x)
 
-def train_classifier():
+def train_classifier(lr: float = 0.5, step_size: int = 20, gamma: float = 0.5):
     """
     Task 2: Train the Model with Scheduling
     """
     # 1. Instantiate the model
-    model = None # TODO: Instantiate PurchaseClassifier
+    model = PurchaseClassifier() # TODO: Instantiate PurchaseClassifier
     
     # 2. Define Loss, Optimizer, and Scheduler
     # TODO: Use BCEWithLogitsLoss
-    criterion = None
+    criterion = nn.BCEWithLogitsLoss()
     
     # TODO: Use Adam optimizer with lr=0.5
-    optimizer = None
+    optimizer = optim.Adam(model.parameters(), lr=lr)
     
     # TODO: Use StepLR, step_size=20, gamma=0.5
-    scheduler = None
+    scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=step_size, gamma=gamma)
     
     epochs = 100
     
     print("--- Starting Training ---")
     for epoch in range(epochs):
         model.train()
-        
+
         # --- THE 5 STEPS OF TRAINING ---
         # 1. Forward pass
-        predictions = None
+        predictions = model(batch_x)
         
         # 2. Compute Loss
-        loss = None
+        loss = criterion(predictions, batch_y)
         
         # 3. Zero gradients
-        
+        optimizer.zero_grad()
         
         # 4. Backward pass
-        
+        loss.backward()
         
         # 5. Optimizer step
-        
+        optimizer.step()
         
         # --- SCHEDULER STEP ---
         # TODO: Step the scheduler
-        
+        scheduler.step()
         
         if (epoch + 1) % 20 == 0:
             current_lr = scheduler.get_last_lr()[0]
