@@ -21,7 +21,8 @@ def train_classifier(X, y, lr: float = 0.5, step_size: int = 20, gamma: float = 
     Task 2: Train the Model with Scheduling
     """
     # 1. Instantiate the model
-    model = PurchaseClassifier() # TODO: Instantiate PurchaseClassifier
+    # TODO: Instantiate PurchaseClassifier
+    model = PurchaseClassifier()
     
     # 2. Define Loss, Optimizer, and Scheduler
     # TODO: Use BCEWithLogitsLoss
@@ -31,7 +32,7 @@ def train_classifier(X, y, lr: float = 0.5, step_size: int = 20, gamma: float = 
     optimizer = optim.Adam(model.parameters(), lr=lr)
     
     # TODO: Use StepLR, step_size=20, gamma=0.5
-    scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=step_size, gamma=gamma)
+    scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=step_size, gamma=gamma) # how many steps before applying 0.5 multiplier to LR
     
     epochs = 100
 

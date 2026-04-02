@@ -15,17 +15,25 @@ class SensorMLP(nn.Module):
     def __init__(self):
         super(SensorMLP, self).__init__()
         # TODO: Define Layer 1 (20 -> 64)
+        self.fcl1 = nn.Linear(20, 64)
         
         # TODO: Define ReLU and Dropout (p=0.3)
-        
+        self.relu = nn.ReLU()
+        self.dropout = nn.Dropout(p=0.3)
+
         # TODO: Define Layer 2 (64 -> 32)
-        
+        self.fcl2 = nn.Linear(64, 32)
+
         # TODO: Define output Layer 3 (32 -> 4 classes)
-        pass
+        self.out_layer = nn.Linear(32, 4)
 
     def forward(self, x):
         # TODO: Route the data: Linear -> ReLU -> Dropout -> Linear -> ReLU -> Dropout -> Output
-        return None
+        for layer in [self.fcl1, self.fcl2]:
+            x = layer(x)
+            x = self.relu(x)
+            x = self.dropout(x)
+        return self.out_layer(x)
 
 
 def train_and_validate():
@@ -35,8 +43,8 @@ def train_and_validate():
     model = SensorMLP()
     
     # TODO: Define CrossEntropyLoss and Adam optimizer (lr=0.01)
-    criterion = None
-    optimizer = None
+    criterion = nn.CrossEntropyLoss()
+    optimizer = optim.Adam(model.parameters(), lr=0.01)
     
     epochs = 50
     best_val_loss = float('inf')
@@ -49,27 +57,39 @@ def train_and_validate():
         #      TRAINING PHASE
         # =======================
         # TODO: Set model to training mode
+        model.train()
+        torch
+        optimizer.zero_grad()
         
         # TODO: Execute forward pass, loss computation, and backprop
-        train_loss = 0.0 # Replace with actual loss
+        y_train_pred = model(X_train)
+        train_loss = criterion(y_train_pred, y_train) # Replace with actual loss
+        train_loss.backward()
+        optimizer.step()
         
         # =======================
         #     VALIDATION PHASE
         # =======================
         # TODO: Set model to evaluation mode
+        model.eval()
         
         # TODO: Disable autograd (torch.no_grad())
-        val_loss = 0.0
-        
-        # TODO: Execute forward pass and calculate validation loss
-        
-        print(f"Epoch {epoch+1:02d} | Train Loss: {train_loss:.4f} | Val Loss: {val_loss:.4f}")
-        
-        # =======================
-        #     CHECKPOINTING
-        # =======================
-        # TODO: If val_loss is better than best_val_loss, save the state_dict
-        pass
+        with torch.no_grad():
+            val_loss = 0.0
+            
+            # TODO: Execute forward pass and calculate validation loss
+            y_val_pred = model(X_val)
+            val_loss = criterion(y_val_pred, y_val)
+            
+            print(f"Epoch {epoch+1:02d} | Train Loss: {train_loss:.4f} | Val Loss: {val_loss:.4f}")
+            
+            # =======================
+            #     CHECKPOINTING
+            # =======================
+            # TODO: If val_loss is better than best_val_loss, save the state_dict
+            if val_loss < best_val_loss:
+                best_val_loss = val_loss
+                torch.save(model.state_dict(), "./model.pth")
 
     print("\n--- Training Complete ---")
 
