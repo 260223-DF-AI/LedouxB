@@ -11,28 +11,29 @@ class ModerationLSTM(nn.Module):
         super(ModerationLSTM, self).__init__()
         
         # 1. TODO: Initialize the Embedding layer (remember padding_idx=0)
-        self.embedding = None 
+        self.embedding = nn.Embedding(vocab_size, embedding_dim=embedding_dim, padding_idx=0) 
         
         # 2. TODO: Initialize the LSTM (remember batch_first=True)
-        self.lstm = None
+        self.lstm = nn.LSTM(embedding_dim, hidden_dim, batch_first=True)
         
         # 3. TODO: Initialize the Linear classification head
-        self.fc = None
+        self.fc = nn.Linear(hidden_dim, output_classes)
 
     def forward(self, x):
         # 1. TODO: Pass input through the embedding layer
-        embedded = None
+        embedded = self.embedding(x)
         
         # 2. TODO: Pass embedded vectors through the LSTM
         # Remember it returns: output, (h_n, c_n)
+        output, (h_n, c_n) = self.lstm(embedded)
         
         # 3. TODO: Extract the hidden state of the final time step
         # Extract from h_n. Assuming a single layer, unidirectional LSTM, 
         # h_n shape is [1, batch_size, hidden_dim]. Get the 0th index.
-        final_memory = None
+        final_memory = h_n[0]
         
         # 4. TODO: Pass the final memory through the linear layer
-        out = None
+        out = self.fc(final_memory)
         
         return out
 
@@ -61,7 +62,7 @@ def process_chat_logs():
         
     # 1. TODO: Pad the sequences using pad_sequence
     # Remember: batch_first=True, padding_value=0
-    padded_batch = None
+    padded_batch = pad_sequence(chat_logs, batch_first=True, padding_value=0)
     
     if padded_batch is not None:
         print(f"\nPadded Batch Shape: {padded_batch.shape} (Expected: torch.Size([4, 6]))")
@@ -75,7 +76,7 @@ def process_chat_logs():
     # 2. TODO: Pass the padded_batch through the model to get predictions
     model.eval()
     with torch.no_grad():
-        predictions = None
+        predictions = model(padded_batch)
         
     if predictions is not None:
         print(f"Output Predictions Shape: {predictions.shape} (Expected: torch.Size([4, 2]))")
@@ -87,16 +88,18 @@ def log_training_to_tensorboard():
     print("\n--- TensorBoard Logging ---")
     
     # TODO: Create a SummaryWriter that writes logs to 'runs/moderation_lstm'
-    writer = None
+    writer = SummaryWriter("./runs/moderation_lstm")
     
     if writer is not None:
         # TODO: Simulate 5 training epochs.
         # For each epoch (0 through 4), calculate a decaying loss: loss = 1.0 / (epoch + 1)
         # Log it with: writer.add_scalar('Loss/train', loss, epoch)
-        
+        for epoch in range(5):
+            loss = 1.0 / (epoch + 1)
+            writer.add_scalar('Loss/train', loss, epoch)
         
         # TODO: Close the writer when done.
-        
+        writer.close()
         
         log_dir = 'runs/moderation_lstm'
         print(f"TensorBoard logs saved to: {log_dir}")
