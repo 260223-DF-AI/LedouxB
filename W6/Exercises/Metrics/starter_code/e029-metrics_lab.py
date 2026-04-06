@@ -29,7 +29,7 @@ def run_metrics_lab():
     
     print("--- Initializing TensorBoard ---")
     # TODO: Initialize the SummaryWriter at 'runs/metrics_lab'
-    writer = None 
+    writer = SummaryWriter("./runs/metrics_lab") 
     
     epochs = 50
     for epoch in range(epochs):
@@ -52,29 +52,36 @@ def run_metrics_lab():
             
             # TODO: Calculate TP, FP, and FN using basic tensor math
             # Hint for TP: count where binary_preds == 1 AND y_val == 1
-            TP = 0.0
-            FP = 0.0
-            FN = 0.0
+            P = torch.sum(binary_preds)
+            N = len(binary_preds) - P
+            TP = torch.sum(torch.mul(binary_preds, y_val))
+            FP = P - TP
+            FN = torch.sum((1 - binary_preds) * y_val)
             
             # Avoid divide-by-zero errors safely
             precision = TP / (TP + FP) if (TP + FP) > 0 else 0.0
             recall = TP / (TP + FN) if (TP + FN) > 0 else 0.0
             
             # TODO: Calculate F1 Score
-            f1_score = 0.0 
+            f1_score = (2 * precision * recall / (precision + recall)) if (precision + recall) > 0 else 0.0
         
         # --- TENSORBOARD LOGGING ---
         # TODO: Log train_loss as 'Loss/Train'
+        writer.add_scalar('Loss/Train', train_loss)
         
         # TODO: Log val_loss as 'Loss/Validation'
+        writer.add_scalar('Loss/Validation', val_loss)
         
         # TODO: Log f1_score as 'Metrics/F1_Score'
+        writer.add_scalar('Metrics/F1_Score', f1_score)
         
         if epoch % 10 == 0:
             print(f"Epoch {epoch} | Val Loss: {val_loss:.4f} | F1: {f1_score:.4f}")
 
     print("--- Shutting down TensorBoard ---")
     # TODO: Flush and close the writer
+    writer.flush()
+    writer.close()
     
     print("\nTraining complete! Run 'tensorboard --logdir=runs' to view.")
 
