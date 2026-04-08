@@ -39,7 +39,7 @@ def analyze_sentiment(tokenizer, model, reviews):
     probs = F.softmax(outputs.logits, dim=-1)
     
     # 5. TODO: Get the predicted class indices using argmax
-    predicted_classes = torch.argmax(probs)
+    predicted_classes = torch.argmax(probs, dim=-1)
     
     # Evaluate and print results
     labels = model.config.id2label # Dictionary mapping {0: 'NEGATIVE', 1: 'POSITIVE'}
